@@ -1,6 +1,6 @@
 package edu.c3341;
 
-import static edu.c3341.TokenKind.ERROR;
+import edu.c3341.*;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -35,7 +35,7 @@ public final class TokenizerTest {
             return;
         }
         Tokenizer t = new Tokenizer(in);
-        while (t.getToken() != TokenKind.EOF && t.getToken() != ERROR) {
+        while (t.getToken() != TokenKind.EOF && t.getToken() != TokenKind.ERROR) {
             System.out.println(t.getToken().testDriverTokenNumber());
             t.skipToken();
         }
