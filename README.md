@@ -35,6 +35,7 @@ The context-free grammar for CORE as defined in class, in BNF (Backus–Naur For
     <in> ::= read <id list>;
     <out> ::= write <id list>;
     <cond> ::= <comp>|!<cond> | [<cond> && <cond>] | [<cond> or <cond>]
+    <comp> ::= (<op> <comp op> <op>)
     <exp> ::= <trm>|<trm>+<exp>|<trm>−<exp>
     <trm> ::= <op> | <op> * <trm>
     <op> ::= <no> | <id> | (<exp>)
