@@ -1,4 +1,4 @@
-package com.benspowell.core_interpreter.tokenizer;
+package core_interpreter.tokenizer;
 
 /**
  * Token kinds needed for Part 1 of the Core Interpreter project.

@@ -1,6 +1,6 @@
-package com.benspowell.core_interpreter.tokenizer;
+package core_interpreter.tokenizer;
 
-import com.benspowell.core_interpreter.tokenizer.*;
+import core_interpreter.tokenizer.*;
 
 import java.io.IOException;
 import java.nio.file.Paths;

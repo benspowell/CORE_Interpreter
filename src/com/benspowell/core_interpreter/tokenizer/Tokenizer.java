@@ -1,4 +1,4 @@
-package com.benspowell.core_interpreter.tokenizer;
+package core_interpreter.tokenizer;
 import java.util.Scanner;
 
 /**
