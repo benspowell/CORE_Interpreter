@@ -21,21 +21,14 @@ The Parser uses a single, monolithic parse-tree object, which is an instance of 
 ## User Manual
 **To compile the project:**
 
- - Unzip folder or clone repository:
-
-    $ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter 
-
+  - Unzip folder or clone repository:
+  <br>`$ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter`<br>
   or
-
-    $ git clone https://github.com/benspowell/CORE_Interpreter.git
-
+  <br>`$ git clone https://github.com/benspowell/CORE_Interpreter.git`<br>
  - Move into project folder:
-
-    $ cd CORE_Interpreter/project
-
+  <br>`$ cd CORE_Interpreter/project`<br>
 - Compile the project and place the compiled output in the bin folder:
-
-    $ javac -d bin src/com/benspowell/core_interpreter/*.java -cp src
+  <br>`$ javac -d bin src/com/benspowell/core_interpreter/*.java -cp src`<br>
 
 
 **To run the compiled program:**
