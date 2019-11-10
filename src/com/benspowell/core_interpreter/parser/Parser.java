@@ -437,45 +437,82 @@ public class Parser {
 		}
 	}
 	
-	//
+	//done
 	private void parseOp() throws ParseException{
 		p.setNT(NonTerminalKind.OP);
 		
+		p.createLeftBranch();
+		
 		switch (t.getTokenKind()) {
 		case INTEGER_CONSTANT:
+			p.setAltNo(1);
 			
+			p.goDownLeftBranch();
+			parseNo();
 			break;
 		case IDENTIFIER:
+			p.setAltNo(2);
+			
+			p.goDownLeftBranch();
+			parseId();
 			break;
 		case OPEN_PAREN:
+			if (t.getTokenKind()!=TokenKind.OPEN_PAREN) throw new ParseException("'('", t);
+			t.skipToken();
+			
+			p.goDownLeftBranch();
+
+			parseExp();
+			
+			if (t.getTokenKind()!=TokenKind.CLOSE_PAREN) throw new ParseException("')'", t);
+			t.skipToken();
 			break;
 		default:
 			throw new ParseException("<no>, <id>, '('", t);
 		}
+		
+		p.goUp();
 	}
 	
-	//
+	//done
 	private void parseCompOp() throws ParseException{
 		p.setNT(NonTerminalKind.COMP_OP);
+		p.createLeftBranch();
+		
+		switch (t.getTokenKind()) {
+		case NOT_EQ_TEST:
+			p.setAltNo(1);
+			break;
+		case EQUALITY_TEST:
+			p.setAltNo(2);
+			break;
+		case LESS_THAN:
+			p.setAltNo(3);
+			break;
+		case GREATER_THAN:
+			p.setAltNo(4);
+			break;
+		case LESS_THAN_OR_EQUAL_TO:
+			p.setAltNo(5);
+			break;
+		case GREATER_THAN_OR_EQUAL_TO:
+			p.setAltNo(6);
+			break;
+		default:
+			throw new ParseException("'!=', '==', '<', '>', '<=', '>='", t);
+		}
 	}
 	
-	//
+	//done
 	private void parseId() throws ParseException{
 		p.setNT(NonTerminalKind.ID);
+		p.setCurrentIdName(t.getTokenVal());
 	}
 	
-	//
-	private void parseLet() throws ParseException{
-		p.setNT(NonTerminalKind.LET);
-	}
-	
-	//
+	//done
 	private void parseNo() throws ParseException{
 		p.setNT(NonTerminalKind.NO);
+		p.setCurrentIdVal(Integer.parseInt(t.getTokenVal()));
 	}
 	
-	//
-	private void parseDigit() throws ParseException{
-		p.setNT(NonTerminalKind.DIGIT);
-	}
 }
