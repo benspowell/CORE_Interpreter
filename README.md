@@ -22,24 +22,31 @@ The Parser uses a single, monolithic parse-tree object, which is an instance of 
 **To compile the project:**
 
  - Unzip folder or clone repository:
-  `$ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter` 
+
+    $ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter 
+
   or
-  `$ git clone https://github.com/benspowell/CORE_Interpreter.git`
+
+    $ git clone https://github.com/benspowell/CORE_Interpreter.git
+
  - Move into project folder:
-  `$ cd CORE_Interpreter/project`
+
+    $ cd CORE_Interpreter/project
+
 - Compile the project and place the compiled output in the bin folder:
-  `$ javac -d bin src/com/benspowell/core_interpreter/*.java -cp src`
+
+    $ javac -d bin src/com/benspowell/core_interpreter/*.java -cp src
+
 
 **To run the compiled program:**
 
 First navigate to bin: `$ cd CORE_Interpreter/project/bin`
 
-Run the compiled output...
+Run the compiled output:
 
     $ java src/com/benspowell/core_interpreter/Interpreter program [print|doNotPrint]
 
-
-...where `program` is the location of the CORE program you are running, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console.
+Where `program` is the location of the CORE program you are running, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console.
 
 ## Details 
 
