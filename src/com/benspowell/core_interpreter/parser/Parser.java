@@ -1,17 +1,24 @@
 package core_interpreter.parser;
-import core_interpreter.parser.*;
 import core_interpreter.tokenizer.*;
 import core_interpreter.error.*;
 
+/**
+ * Parser for the CORE Interpreter Project.
+ * 
+ * @author Benjamin S. Powell
+ *
+ *
+ */
 public class Parser {
 	
-	/*
-	 * The persistent Tokenizer used throughout the class.
-	 */
+
+	// The persistent Tokenizer used throughout the class.
 	Tokenizer t;
+	
+	// The ParseTree used throughout the class.
 	ParseTree p;
 	
-	/*
+	/**
 	 * Parse a CORE program. This is the only public method, as all other methods 
 	 * will be recursively called as needed. The method initializes and generates the program's 
 	 * parseTree, and throws errors as necessary.
@@ -58,7 +65,9 @@ public class Parser {
 		return p;
 	}
 	
-	//done
+	/**
+	 * Parse a declaration sequence.
+	 */
 	private void parseDeclSeq()  throws ParseException{
 		p.setNT(NonTerminalKind.DECL_SEQ);
 		
@@ -80,9 +89,12 @@ public class Parser {
 		else {
 			p.setAltNo(1);
 		}
+
 	}
 	
-	//done
+	/**
+	 * Parse a statement sequence.
+	 */
 	private void parseStmtSeq() throws ParseException{
 		p.setNT(NonTerminalKind.STMT_SEQ);
 		
@@ -106,7 +118,9 @@ public class Parser {
 		}
 	}
 	
-	//done
+	/**
+	 * Parse a declaration.
+	 */
 	private void parseDecl() throws ParseException{
 		p.setNT(NonTerminalKind.DECL);
 		p.setAltNo(1);
@@ -124,7 +138,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse an ID list.
+	 */
 	private void parseIdList() throws ParseException{
 		p.setNT(NonTerminalKind.ID_LIST);
 		p.setAltNo(1);
@@ -146,7 +162,9 @@ public class Parser {
 		}
 	}
 	
-	//done
+	/**
+	 * Parse a statement.
+	 */
 	private void parseStmt() throws ParseException{
 		p.setNT(NonTerminalKind.STMT);
 		
@@ -181,7 +199,9 @@ public class Parser {
 		p.goUp();
 	}
 	
-	//done
+	/**
+	 * Parse an asssignment.
+	 */
 	private void parseAss() throws ParseException{
 		
 		p.setNT(NonTerminalKind.ASS);
@@ -205,7 +225,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse an if, then, [else] statement sequence.
+	 */
 	private void parseIf() throws ParseException{
 		p.setNT(NonTerminalKind.IF);
 		p.setAltNo(1);
@@ -243,7 +265,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse a loop.
+	 */
 	private void parseLoop() throws ParseException{
 		p.setNT(NonTerminalKind.LOOP);
 		p.setAltNo(1);
@@ -269,7 +293,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse an in statement.
+	 */
 	private void parseIn() throws ParseException{
 		p.setNT(NonTerminalKind.IN);
 		p.setAltNo(1);
@@ -287,7 +313,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse an out statement.
+	 */
 	private void parseOut() throws ParseException{
 		p.setNT(NonTerminalKind.OUT);
 		p.setAltNo(1);
@@ -305,7 +333,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse a condition.
+	 */
 	private void parseCond() throws ParseException{
 		p.setNT(NonTerminalKind.COND);
 		
@@ -358,7 +388,9 @@ public class Parser {
 		
 	}
 
-	//done
+	/**
+	 * Parse a comparison.
+	 */
 	private void parseComp() throws ParseException{
 		p.setNT(NonTerminalKind.COMP);
 		p.setAltNo(1);
@@ -386,7 +418,9 @@ public class Parser {
 		t.skipToken();
 	}
 	
-	//done
+	/**
+	 * Parse an expression.
+	 */
 	private void parseExp() throws ParseException{
 		p.setNT(NonTerminalKind.EXP);
 		p.setAltNo(1);
@@ -416,7 +450,9 @@ public class Parser {
 		
 	}
 	
-	//done
+	/**
+	 * Parse a term.
+	 */
 	private void parseTrm() throws ParseException{
 		p.setNT(NonTerminalKind.TRM);
 		p.setAltNo(1);
@@ -437,7 +473,9 @@ public class Parser {
 		}
 	}
 	
-	//done
+	/**
+	 * Parse an operator.
+	 */
 	private void parseOp() throws ParseException{
 		p.setNT(NonTerminalKind.OP);
 		
@@ -474,7 +512,9 @@ public class Parser {
 		p.goUp();
 	}
 	
-	//done
+	/**
+	 * Parse a comparison operator.
+	 */
 	private void parseCompOp() throws ParseException{
 		p.setNT(NonTerminalKind.COMP_OP);
 		p.createLeftBranch();
@@ -503,13 +543,17 @@ public class Parser {
 		}
 	}
 	
-	//done
+	/**
+	 * Parse an ID.
+	 */
 	private void parseId() throws ParseException{
 		p.setNT(NonTerminalKind.ID);
 		p.setCurrentIdName(t.getTokenVal());
 	}
 	
-	//done
+	/**
+	 * Parse a number.
+	 */
 	private void parseNo() throws ParseException{
 		p.setNT(NonTerminalKind.NO);
 		p.setCurrentIdVal(Integer.parseInt(t.getTokenVal()));

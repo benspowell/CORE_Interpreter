@@ -1,7 +1,5 @@
 package core_interpreter.tokenizer;
 
-import core_interpreter.tokenizer.*;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Scanner;
