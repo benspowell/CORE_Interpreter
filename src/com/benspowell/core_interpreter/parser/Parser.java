@@ -1,7 +1,7 @@
 package core_interpreter.parser;
 import core_interpreter.parser.*;
 import core_interpreter.tokenizer.*;
-import java.io.IOException;
+import core_interpreter.error.*;
 
 public class Parser {
 	
@@ -10,6 +10,7 @@ public class Parser {
 	 */
 	Tokenizer t;
 	ParseTree p;
+	
 	/*
 	 * Parse a CORE program. This is the only public method, as all other methods 
 	 * will be recursively called as needed. The method initializes and generates the program's 
@@ -17,28 +18,171 @@ public class Parser {
 	 * 
 	 * Returns the program's complete ParseTree.
 	 */
-	public ParseTree coreProgram(Tokenizer t) throws IOException{
+	public ParseTree coreProgram(Tokenizer t) throws ParseException{
+		
+		//initialize class variables
 		this.t = t;
 		this.p = new ParseTree();
 		
-		return null;
-	}
-	private void parseDeclSeq()  throws IOException{
+		//set nt
+		p.setNT(NonTerminalKind.PROG);
+		p.setAltNo(1);
 		
-	}
-	private void parseStmtSeq       () throws IOException{
+		//check for 'program'
+		if (t.getTokenKind()!=TokenKind.PROGRAM) throw new ParseException("'program'", t);
+		t.skipToken();
 		
-	}
-	private void parseDecl          () throws IOException{
+		//create branches
+		p.createLeftBranch();
+		p.createMiddleBranch();
 		
-	}
-	private void parseIdList        () throws IOException{
+		//parse decl seq, add to tree
+		p.goDownLeftBranch();
+		parseDeclSeq();
+		p.goUp();
 		
-	}
-	private void parseStmt          () throws IOException{
+		//check for 'begin'
+		if (t.getTokenKind()!=TokenKind.BEGIN) throw new ParseException("'begin'", t);
+		t.skipToken();
 		
+		//parse stmt seq, add to tree
+		p.goDownMiddleBranch();
+		parseStmtSeq();
+		p.goUp();
+		
+		//check for 'end'
+		if (t.getTokenKind()!=TokenKind.END) throw new ParseException("'end'", t);
+		t.skipToken();
+		
+		//return the tree
+		return p;
 	}
-	private void parseAss () throws IOException{
+	
+	//done
+	private void parseDeclSeq()  throws ParseException{
+		p.setNT(NonTerminalKind.DECL_SEQ);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseDecl();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.BEGIN) {
+			p.setAltNo(2);
+			
+			p.createMiddleBranch();
+			
+			p.goDownMiddleBranch();
+			parseDeclSeq();
+			p.goUp();
+		}
+		else {
+			p.setAltNo(1);
+		}
+	}
+	
+	//done
+	private void parseStmtSeq() throws ParseException{
+		p.setNT(NonTerminalKind.STMT_SEQ);
+		
+		//assume 1st alternative, will update it later if necessary.
+		p.setAltNo(1);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseStmt();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.END) {
+			p.setAltNo(2);
+			
+			p.createMiddleBranch();
+			
+			p.goDownMiddleBranch();
+			parseStmtSeq();
+			p.goUp();
+		}
+	}
+	
+	//done
+	private void parseDecl() throws ParseException{
+		p.setNT(NonTerminalKind.DECL);
+		p.setAltNo(1);
+		
+		if (t.getTokenKind()!=TokenKind.INT) throw new ParseException("'int'", t);
+		t.skipToken();
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseIdList();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.SEMICOLON) throw new ParseException("';'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseIdList() throws ParseException{
+		p.setNT(NonTerminalKind.ID_LIST);
+		p.setAltNo(1);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseId();
+		p.goUp();
+		
+		if (t.getTokenKind()==TokenKind.COMMA) {
+			p.setAltNo(2);
+			
+			p.createMiddleBranch();
+			
+			p.goDownMiddleBranch();
+			parseIdList();
+			p.goUp();
+		}
+	}
+	
+	//done
+	private void parseStmt() throws ParseException{
+		p.setNT(NonTerminalKind.STMT);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		
+		switch (t.getTokenKind()) {
+		case IDENTIFIER:
+			p.setAltNo(1);
+			parseAss();
+			break;
+		case IF:
+			p.setAltNo(2);
+			parseIf();
+			break;
+		case WHILE:
+			p.setAltNo(3);
+			parseLoop();
+			break;
+		case READ:
+			p.setAltNo(4);
+			parseIn();
+			break;
+		case WRITE: 
+			p.setAltNo(5);
+			parseOut();
+			break;
+		default:
+			throw new ParseException("<id>, 'if', 'while', 'read', 'write'", t);
+		}
+		p.goUp();
+	}
+	
+	//done
+	private void parseAss() throws ParseException{
 		
 		p.setNT(NonTerminalKind.ASS);
 		p.setAltNo(1);
@@ -50,48 +194,288 @@ public class Parser {
 		parseId();
 		p.goUp();
 		
+		if (t.getTokenKind()!=TokenKind.ASSIGNMENT_OPERATOR) throw new ParseException("'='", t);
+		t.skipToken();
+		
 		p.goDownMiddleBranch();
 		parseExp();
+		p.goUp();
 		
+		if (t.getTokenKind()!=TokenKind.SEMICOLON) throw new ParseException("';'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseIf() throws ParseException{
+		p.setNT(NonTerminalKind.IF);
+		p.setAltNo(1);
+		
+		if (t.getTokenKind()!=TokenKind.IF) throw new ParseException("'if'", t);
+		t.skipToken();
+		
+		p.createLeftBranch();
+		p.createMiddleBranch();
+		
+		p.goDownLeftBranch();
+		parseCond();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.THEN) throw new ParseException("'then'", t);
+		t.skipToken();
+		
+		p.goDownMiddleBranch();
+		parseStmtSeq();
+		p.goUp();
+		
+		if (t.getTokenKind()==TokenKind.ELSE) {
+			p.setAltNo(2);
+			
+			p.createRightBranch();
+			
+			p.goDownRightBranch();
+			parseStmtSeq();
+			p.goUp();
+		}
+		
+		if (t.getTokenKind()!=TokenKind.END) throw new ParseException("'end'", t);
+		t.skipToken();
+		if (t.getTokenKind()!=TokenKind.SEMICOLON) throw new ParseException("';'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseLoop() throws ParseException{
+		p.setNT(NonTerminalKind.LOOP);
+		p.setAltNo(1);
+		
+		p.createLeftBranch();
+		p.createMiddleBranch();
+		
+		if (t.getTokenKind()!=TokenKind.WHILE) throw new ParseException("'while'", t);
+		t.skipToken();
+		
+		p.goDownLeftBranch();
+		parseCond();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.LOOP) throw new ParseException("'loop'", t);
+		t.skipToken();
+		
+		p.goDownMiddleBranch();
+		parseStmtSeq();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.END) throw new ParseException("'end'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseIn() throws ParseException{
+		p.setNT(NonTerminalKind.IN);
+		p.setAltNo(1);
+		
+		if (t.getTokenKind()!=TokenKind.READ) throw new ParseException("'read'", t);
+		t.skipToken();
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseIdList();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.SEMICOLON) throw new ParseException("';'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseOut() throws ParseException{
+		p.setNT(NonTerminalKind.OUT);
+		p.setAltNo(1);
+		
+		if (t.getTokenKind()!=TokenKind.WRITE) throw new ParseException("'write'", t);
+		t.skipToken();
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseIdList();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.SEMICOLON) throw new ParseException("';'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseCond() throws ParseException{
+		p.setNT(NonTerminalKind.COND);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		
+		switch (t.getTokenKind()) {
+		case OPEN_PAREN:
+			p.setAltNo(1);
+			parseComp();
+			p.goUp();
+			break;
+		case BANG:
+			p.setAltNo(2);
+			t.skipToken();
+			parseCond();
+			p.goUp();
+			break;
+		case OPEN_BRACKET:
+			t.skipToken();
+			parseCond();
+			p.goUp();
+			
+			if (t.getTokenKind()!=TokenKind.AND_OPERATOR) {
+				p.setAltNo(3);
+				t.skipToken();
+			}
+			else if (t.getTokenKind()!=TokenKind.OR_OPERATOR) {
+				p.setAltNo(4);
+				t.skipToken();
+			}
+			else {
+				throw new ParseException("'&&', '|'", t);
+			}
+			
+			p.createMiddleBranch();
+			
+			p.goDownMiddleBranch();
+			parseCond();
+			p.goUp();
+			
+			if (t.getTokenKind()!=TokenKind.CLOSE_BRACKET) throw new ParseException("']'", t);
+			t.skipToken();
+			
+			break;
+		default:
+			throw new ParseException("'(', '!', '['", t);
+		}
 		
 	}
-	private void parseIf() throws IOException{
+
+	//done
+	private void parseComp() throws ParseException{
+		p.setNT(NonTerminalKind.COMP);
+		p.setAltNo(1);
+		
+		if (t.getTokenKind()!=TokenKind.OPEN_PAREN) throw new ParseException("'('", t);
+		t.skipToken();
+		
+		p.createLeftBranch();
+		p.createMiddleBranch();
+		p.createRightBranch();
+		
+		p.goDownLeftBranch();
+		parseOp();
+		p.goUp();
+		
+		p.goDownMiddleBranch();
+		parseCompOp();
+		p.goUp();
+		
+		p.goDownRightBranch();
+		parseOp();
+		p.goUp();
+		
+		if (t.getTokenKind()!=TokenKind.CLOSE_PAREN) throw new ParseException("')'", t);
+		t.skipToken();
+	}
+	
+	//done
+	private void parseExp() throws ParseException{
+		p.setNT(NonTerminalKind.EXP);
+		p.setAltNo(1);
+		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseTrm();
+		p.goUp();
+		
+		if (t.getTokenKind()==TokenKind.PLUS) {
+			t.skipToken();
+			p.setAltNo(2);
+			p.createMiddleBranch();
+			p.goDownMiddleBranch();
+			parseExp();
+			p.goUp();
+		}
+		else if (t.getTokenKind()==TokenKind.MINUS) {
+			t.skipToken();
+			p.setAltNo(3);
+			p.createMiddleBranch();
+			p.goDownMiddleBranch();
+			parseExp();
+			p.goUp();
+		}
 		
 	}
-	private void parseLoop() throws IOException{
+	
+	//done
+	private void parseTrm() throws ParseException{
+		p.setNT(NonTerminalKind.TRM);
+		p.setAltNo(1);
 		
+		p.createLeftBranch();
+		
+		p.goDownLeftBranch();
+		parseNo();
+		p.goUp();
+		
+		if (t.getTokenKind()==TokenKind.ASTERISK) {
+			t.skipToken();
+			p.setAltNo(2);
+			p.createMiddleBranch();
+			p.goDownMiddleBranch();
+			parseTrm();
+			p.goUp();
+		}
 	}
-	private void parseIn() throws IOException{
+	
+	//
+	private void parseOp() throws ParseException{
+		p.setNT(NonTerminalKind.OP);
 		
+		switch (t.getTokenKind()) {
+		case INTEGER_CONSTANT:
+			
+			break;
+		case IDENTIFIER:
+			break;
+		case OPEN_PAREN:
+			break;
+		default:
+			throw new ParseException("<no>, <id>, '('", t);
+		}
 	}
-	private void parseOut() throws IOException{
-		
+	
+	//
+	private void parseCompOp() throws ParseException{
+		p.setNT(NonTerminalKind.COMP_OP);
 	}
-	private void parseCond() throws IOException{
-		
+	
+	//
+	private void parseId() throws ParseException{
+		p.setNT(NonTerminalKind.ID);
 	}
-	private void parseExp() throws IOException{
-		
+	
+	//
+	private void parseLet() throws ParseException{
+		p.setNT(NonTerminalKind.LET);
 	}
-	private void parseTrm() throws IOException{
-		
+	
+	//
+	private void parseNo() throws ParseException{
+		p.setNT(NonTerminalKind.NO);
 	}
-	private void parseOp() throws IOException{
-		
-	}
-	private void parseCompOp() throws IOException{
-		
-	}
-	private void parseId() throws IOException{
-		
-	}
-	private void parseLet() throws IOException{
-		
-	}
-	private void parseNo() throws IOException{
-		
-	}
-	private void parseDigit() throws IOException{
-		
+	
+	//
+	private void parseDigit() throws ParseException{
+		p.setNT(NonTerminalKind.DIGIT);
 	}
 }
