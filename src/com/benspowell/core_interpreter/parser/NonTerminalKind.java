@@ -6,6 +6,26 @@ package core_interpreter.parser;
  */
 enum NonTerminalKind {
 
+    PROG,
+    DECL_SEQ,
+    STMT_SEQ,
+    DECL,
+    ID_LIST,
+    STMT,
+    ASS,
+    IF,
+    LOOP,
+    IN,
+    OUT,
+    COND,
+    COMP,
+    EXP,
+    TRM,
+    OP,
+    COMP_OP,
+    ID,
+    LET,
+    NO,
+    DIGIT;   
     
-
 }
