@@ -18,6 +18,13 @@ public class Parser {
 	// The ParseTree used throughout the class.
 	ParseTree p;
 	
+	public Parser(Tokenizer t) {
+		
+		//initialize class variables
+		this.t = t;
+		this.p = new ParseTree();
+	}
+	
 	/**
 	 * Parse a CORE program. This is the only public method, as all other methods 
 	 * will be recursively called as needed. The method initializes and generates the program's 
@@ -25,11 +32,9 @@ public class Parser {
 	 * 
 	 * Returns the program's complete ParseTree.
 	 */
-	public ParseTree coreProgram(Tokenizer t) throws ParseException{
+	public ParseTree coreProgram() throws ParseException{
 		
-		//initialize class variables
-		this.t = t;
-		this.p = new ParseTree();
+
 		
 		//set nt
 		p.setNT(NonTerminalKind.PROG);
