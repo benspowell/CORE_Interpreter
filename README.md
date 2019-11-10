@@ -7,8 +7,6 @@ CORE programming language Interpreter, consisting of a Tokenizer, Parser, Printe
 Definition of a Software Interpreter (Dr. Wayne Heym):
 > A program whose job at run-time is to manage a process governed by an input program, ushering that process through its states at run-time.
 
-
-
 The interpreter consists of the following components:
 - **Tokenizer:** Inputs Core program, produces stream of *tokens*.
 - **Parser:** Consumes stream of tokens, produces the *abstract parse tree* (PT).
@@ -20,7 +18,32 @@ The Tokenizer simulates an FSA (finite state automaton).
 The Parser, Printer, and Executor are written using a recursive descent (syntax-directed) approach.
 The Parser uses a single, monolithic parse-tree object, which is an instance of the ParseTree class.
 
-## Grammar for CORE
+## User Manual
+**To compile the project:**
+
+ - Unzip folder or clone repository:
+  `$ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter` 
+  or
+  `$ git clone https://github.com/benspowell/CORE_Interpreter.git`
+ - Move into project folder:
+  `$ cd CORE_Interpreter/project`
+- Compile the project and place the compiled output in the bin folder:
+  `$ javac -d bin src/com/benspowell/core_interpreter/*.java -cp src`
+
+**To run the compiled program:**
+
+First navigate to bin: `$ cd CORE_Interpreter/project/bin`
+
+Run the compiled output...
+
+    $ java src/com/benspowell/core_interpreter/Interpreter program [print|doNotPrint]
+
+
+...where `program` is the location of the CORE program you are running, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console.
+
+## Details 
+
+### Grammar for CORE
 The context-free grammar for CORE as defined in class, in BNF (Backus–Naur Form):
 
     <prog> ::= program <decl seq> begin <stmt seq> end
@@ -45,10 +68,49 @@ The context-free grammar for CORE as defined in class, in BNF (Backus–Naur For
     <no>::=<digit> | <digit><no>
     <digit>::=0 | 1 | 2 | 3 | ... | 9
     
-## User Manual
-Setup.
 
-How to use.
+
+
+### Tokenizer
+Converting a program written in CORE to tokens and TokenKinds. The Core language consists of the following 33 legal tokens:
+
+-   **Reserved words (11):**  
+    program, begin, end, int, if, then, else, while, loop, read, write
+-   **Special symbols (19):**  
+    ; , = ! [ ] && || ( ) + - * != == < > <= >=
+-   **Integers.** (unsigned, possibly with leading zeros)
+-   **Identifiers:** start with uppercase letter, followed by zero or more uppercase letters and ending with zero or more digits.
+
+These tokens are numbered 1 through 11 for the reserved words, 12 through 30 for the special symbols, 31 for integer, and 32 for identifier. One other useful token is the EOF token (for end-of-file); that is token number 33.
+
+Public methods available from the Tokenizer class:
+
+| Return Type | Method & Description |
+|--|--|
+| TokenKind | `getTokenKind()` <br> Peek at the TokenKind of the current top token.|
+| String | `getTokenVal()` <br> Peek at the value of the current top token.|
+| void | `skipToken()` <br> Skips the top token.|
+
+
+Files included in the Tokenizer: 
+-   Tokenizer.java - Contains the Tokenizer class which has public methods skipToken, getTokenKind, getTokenVal
+-   TokenizerTest.java - Contains main method. used to run tests on Tokenizer
+-   TokenKind.java - Contains TokenKind inormation used by other classes to differentiate tokens.
+
+### Parser
+The parser takes tokens in order from the Tokenizer and uses them to build a ParseTree structure for the CORE program. 
+
+Files included in the Parser:
+- Parser.java - 
+- ParseTree.java - 
+- NonTerminalKind.java - 
+
+### Printer
+The Printer navigates a fully-built ParseTree of a CORE program and prettyPrints it to the console.
+
+### Executor 
+
+
 ## Testing
 The testing process for the interpreter was performed manually during the developmental stages of the project. 
 
