@@ -36,7 +36,6 @@ public class Tokenizer {
 	    private String next;
 
 	    public PeekableScanner(Scanner scanner) {
-//	    	scanner.useDelimiter("");
 	        this.scanner = scanner;
 	        this.next = scanner.hasNext() ? scanner.next() : null;
 	    }
@@ -146,7 +145,7 @@ public class Tokenizer {
      * @ensures getToken = [the kind of token this.front]
      */
     @SuppressWarnings("unused")
-	TokenKind getToken() {
+	public void getToken() {
     	State currentState = State.READY_FOR_FIRST_CHAR_OF_NEXT_TOKEN; 
     	Top_Token_Kind = null; 
     	Top_Token = ""; 
@@ -393,7 +392,6 @@ public class Tokenizer {
     			break;
     		}
     	}
-    	return Top_Token_Kind;
     }
     
     /**
@@ -405,11 +403,21 @@ public class Tokenizer {
      *          ([the token kind of #this.front is EOF] and
      *          this = #this)</pre>
      */
-    void skipToken() {
+    public void skipToken() {
     	getToken();
     	in.skip(Top_Token);
     }
 
+    public TokenKind getTokenKind() {
+    	this.getToken();
+    	return this.Top_Token_Kind;
+    }
+    
+    public String getTokenVal() {
+    	this.getToken();
+    	return this.Top_Token;
+    }
+    
     /**
      * Return the integer value of the front INTEGER_CONSTANT token. (Restores
      * this.)

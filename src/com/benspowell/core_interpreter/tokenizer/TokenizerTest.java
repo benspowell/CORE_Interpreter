@@ -35,14 +35,14 @@ public final class TokenizerTest {
             return;
         }
         Tokenizer t = new Tokenizer(in);
-        while (t.getToken() != TokenKind.EOF && t.getToken() != TokenKind.ERROR) {
-            System.out.println(t.getToken().testDriverTokenNumber());
+        while (t.getTokenKind() != TokenKind.EOF && t.getTokenKind() != TokenKind.ERROR) {
+            System.out.println(t.getTokenKind().testDriverTokenNumber());
             t.skipToken();
         }
-        if (t.getToken() == TokenKind.EOF) {
-        	System.out.println(t.getToken().testDriverTokenNumber());
+        if (t.getTokenKind() == TokenKind.EOF) {
+        	System.out.println(t.getTokenKind().testDriverTokenNumber());
         }
-        if (t.getToken() == TokenKind.ERROR) {
+        if (t.getTokenKind() == TokenKind.ERROR) {
             System.out.println("Error: Illegal token encountered.");
         }
         /*

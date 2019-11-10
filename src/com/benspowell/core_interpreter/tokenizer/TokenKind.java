@@ -6,7 +6,7 @@ package core_interpreter.tokenizer;
  * @author Benjamin S. Powell
  *
  */
-enum TokenKind {
+public enum TokenKind {
 
     /**
      * Test driver's token number = 1. Token is program.
