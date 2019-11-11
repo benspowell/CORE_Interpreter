@@ -119,14 +119,14 @@ public class ParseTree {
 	/*
 	 * Get the value of the current node if it's an <id>
 	 */
-	public int getCurrentIdVal() {
+	public int getCurrentIntVal() {
 		return this.currentNode.idVal;
 	}
 	
 	/*
 	 * Set the value of the current node if it's an <id>
 	 */
-	public void setCurrentIdVal(int x) {
+	public void setCurrentIntVal(int x) {
 		this.currentNode.idVal=x;
 	}
 	

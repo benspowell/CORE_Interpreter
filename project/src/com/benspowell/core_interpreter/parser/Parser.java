@@ -579,7 +579,7 @@ public class Parser {
 	 */
 	private void parseNo() throws ParseException{
 		p.setNT(NonTerminalKind.NO);
-		p.setCurrentIdVal(Integer.parseInt(t.getTokenVal()));
+		p.setCurrentIntVal(Integer.parseInt(t.getTokenVal()));
 		t.skipToken();
 	}
 	

@@ -514,7 +514,7 @@ public class Printer {
 	 * Print a number. 
 	 */
 	private void printNo() {
-		out.print(Integer.toString(p.getCurrentIdVal()));
+		out.print(Integer.toString(p.getCurrentIntVal()));
 	}
 
 	

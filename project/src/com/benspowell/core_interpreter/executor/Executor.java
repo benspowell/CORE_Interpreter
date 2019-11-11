@@ -448,6 +448,6 @@ public class Executor {
 	 * Execute a number. 
 	 */
 	private int executeNo() {
-		return p.getCurrentIdVal();
+		return p.getCurrentIntVal();
 	}
 }
