@@ -43,6 +43,10 @@ public class ParseTree {
 		this.currentNode=this.root;
 	}
 	
+	public void goAllTheWayBackUp() {
+		this.currentNode=this.root;
+	}
+	
 	/*
 	 * Get the non-terminal at the current node.
 	 */

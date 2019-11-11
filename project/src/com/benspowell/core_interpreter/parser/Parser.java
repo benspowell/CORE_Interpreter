@@ -359,22 +359,25 @@ public class Parser {
 		
 		p.createLeftBranch();
 		
-		p.goDownLeftBranch();
+		
 		
 		switch (t.getTokenKind()) {
 		case OPEN_PAREN:
 			p.setAltNo(1);
+			p.goDownLeftBranch();
 			parseComp();
 			p.goUp();
 			break;
 		case BANG:
 			p.setAltNo(2);
+			p.goDownLeftBranch();
 			t.skipToken();
 			parseCond();
 			p.goUp();
 			break;
 		case OPEN_BRACKET:
 			t.skipToken();
+			p.goDownLeftBranch();
 			parseCond();
 			p.goUp();
 			

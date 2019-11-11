@@ -5,9 +5,9 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 import com.benspowell.core_interpreter.error.*;
+import com.benspowell.core_interpreter.executor.*;
 import com.benspowell.core_interpreter.printer.*;
 import com.benspowell.core_interpreter.tokenizer.*;
-import com.benspowell.core_interpreter.executer.*;
 import com.benspowell.core_interpreter.parser.*;
 
 /**
@@ -22,16 +22,18 @@ public class Interpreter {
 	public static void main(String [] args) {
 		
 		
-		boolean iShouldPrettyPrint = true;
-//		boolean iShouldPrettyPrint = args [ 1 ] == "print";
+		boolean iShouldPrettyPrint = args[args.length-1].equals("print");
 		
 		try {
 			
 			// Open the program file.
-	    	Scanner fileInput = new Scanner ( Paths.get(args[0]) );
+	    	Scanner programInput = new Scanner ( Paths.get(args[0]) );
 	        
+			// Open the input file.
+	    	Scanner fileInput = new Scanner ( Paths.get(args[1]) );
+	    	
 	    	// Create the Tokenizer.
-	        Tokenizer tokenizer = new Tokenizer ( fileInput );
+	        Tokenizer tokenizer = new Tokenizer ( programInput );
 			
 	        // Create the Parser.
 	        Parser parser = new Parser ( tokenizer );
@@ -45,16 +47,28 @@ public class Interpreter {
 	        // Print, if the user wants to.
 	        if ( iShouldPrettyPrint ) printer.printCoreProgram();
 	        
-	        // TODO: Create the Executor.
-
-	        // TODO: Execute the program and print the output.
+	        // Create the Executor.
+	        Executor executor = new Executor (System.out, parseTree, fileInput );
+	        
+	        // Execute the program.
+	        executor.executeCoreProgram();
 	        
 		}
 		catch(IOException e) {
-			System.err.println("Error opening file: " + args[0]);
+			
+			System.err.println("Error opening file: " + e.getMessage());
+			
 		}
 		catch (ParseException e){
+			
 			System.err.println(e.getMessage());
+			e.printStackTrace();
+			
+		} catch (ExecutorException e) {
+			
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			
 		}
 	}
 }
