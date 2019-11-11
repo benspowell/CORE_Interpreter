@@ -140,7 +140,7 @@ The Executor uses a `HashMap<String,RuntimeVariable>` to keep track of runtime v
 |--|--|
 | void | `executeCoreProgram()` <br> Execute a CORE program|
 
-File included in the Printer package:
+File included in the Executor package:
 - Executor.java - Contains the executor class, with RuntimeVariable subclass, to execute the program.
 
 ### Error Reporting
