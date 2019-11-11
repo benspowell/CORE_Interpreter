@@ -1,0 +1,65 @@
+
+CORE Language Interpreter README - Benjamin Powell ( powell.907@osu.edu ) 
+
+*More detailed/nicely-formatted versions of all this stuff is included in etc/doc.md)*
+
+**SETUP AND COMPILATION**
+
+  - Unzip folder:
+  $ unzip powell907_CORE_Interpreter.zip -d CORE_Interpreter
+
+ - Move into project folder:
+  $ cd CORE_Interpreter/project
+
+- Compile the project and place the compiled output in the bin folder:
+  $ javac -d bin com/benspowell/core_interpreter/*.java -cp src
+
+**RUN**
+
+First navigate to bin: `$ cd CORE_Interpreter/project/bin`
+
+Run the compiled output:
+
+    $ java src/com/benspowell/core_interpreter/Interpreter <program> <input> [print|doNotPrint]
+
+Where <program> is the location of the CORE program you are running, <input> is the location of the input file, and [print|doNotPrint] is either print or doNotPrint.
+
+If no argument is provided for the print flag, or if a value other than print or doNotPrint is provided, the interpreter will default to doNotPrint. 
+
+**FILES**
+
+etc/doc.md
+- Documentation.
+
+program/src/com/benspowell/core_interpreter/Interpreter.java
+- contains main method, runs full interpreter.
+
+program/src/com/benspowell/core_interpreter/tokenizer/Tokenizer.java 
+- Contains the Tokenizer class which has public methods skipToken, getTokenKind, getTokenVal
+
+program/src/com/benspowell/core_interpreter/tokenizer/TokenizerTest.java 
+- Contains main method. used to run tests on Tokenizer
+
+program/src/com/benspowell/core_interpreter/tokenizer/TokenKind.java 
+- Contains TokenKind inormation used by other classes to differentiate tokens.
+
+program/src/com/benspowell/core_interpreter/parser/Parser.java 
+- Contains the parser class, which parses the program using recursive descent.
+
+program/src/com/benspowell/core_interpreter/parser/ParseTree.java 
+- Contains the ParseTree class, which provides abtraction for the parse tree structure.
+
+program/src/com/benspowell/core_interpreter/parser/NonTerminalKind.java 
+- Contains an enum for non-terminal kind.
+
+program/src/com/benspowell/core_interpreter/printer/Printer.java 
+- Contains the printer class, with PrettyPrintStream subclass, to print the program.
+
+program/src/com/benspowell/core_interpreter/executor/Executor.java 
+- Contains the executor class, with RuntimeVariable subclass, to execute the program.
+
+program/src/com/benspowell/core_interpreter/error/ParserException.java 
+- Detailed error reporting for parser.
+
+program/src/com/benspowell/core_interpreter/error/ExecutorException.java 
+- Detailed error reporting for executor.
