@@ -143,7 +143,7 @@ The Executor uses a `HashMap<String,RuntimeVariable>` to keep track of runtime v
 File included in the Printer package:
 - Executor.java - Contains the executor class, with RuntimeVariable subclass, to execute the program.
 
-###Error Reporting
+### Error Reporting
 An error package was used to report errors from the parser and executor.
 
 The error package consists of the ParserException class, and the ExecutorException class, both of which extend Exception.
