@@ -37,7 +37,7 @@ First navigate to bin: `$ cd CORE_Interpreter/project/bin`
 
 Run the compiled output:
 
-    $ java src/com/benspowell/core_interpreter/Interpreter program input [print|doNotPrint]
+    $ java com/benspowell/core_interpreter/Interpreter program input [print|doNotPrint]
 
 Where `program` is the location of the CORE program you are running, `input` is the location of the input file, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console. If no argument is provided for the print flag, or if a value other than print or doNotPrint is provided, the interpreter will default to doNotPrint. 
 
