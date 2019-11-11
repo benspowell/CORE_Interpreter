@@ -112,7 +112,7 @@ Some important public methods available from the Parser package:
 
 Files included in the Parser package:
 - Parser.java - Contains the parser class, which parses the program using recursive descent.
-- ParseTree.java - Contains the ParseTree class, which provides abtraction for the parse tree strucure.
+- ParseTree.java - Contains the ParseTree class, which provides abtraction for the parse tree structure.
 - NonTerminalKind.java - Contains an enum for non-terminal kind.
 
 ### Printer
@@ -143,10 +143,19 @@ The Executor uses a `HashMap<String,RuntimeVariable>` to keep track of runtime v
 File included in the Printer package:
 - Executor.java - Contains the executor class, with RuntimeVariable subclass, to execute the program.
 
+###Error Reporting
+An error package was used to report errors from the parser and executor.
+
+The error package consists of the ParserException class, and the ExecutorException class, both of which extend Exception.
+
+Files:
+- ParserException.java - Detailed error reporting for parser.
+- ExecutorException.java - Detailed error reporting for executor.
+
 ## Testing
 The testing process for the interpreter was performed manually during the developmental stages of the project. 
 
-Several Example programs were provided to use in testing, along with expected output. The files for those samples (program and input files) are included in the `program/data` folder. 
+Several example programs were provided to use in testing, along with expected output. The files for those samples (program and input files) are included in the `program/data` folder. 
 
 The Interpreter produces the correct output for all files provided as samples.
 
