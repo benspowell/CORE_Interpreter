@@ -37,7 +37,7 @@ First navigate to bin: `$ cd CORE_Interpreter/project/bin`
 
 Run the compiled output:
 
-    $ java src/com/benspowell/core_interpreter/Interpreter program input [print|doNotPrint]
+    $ java com/benspowell/core_interpreter/Interpreter program input [print|doNotPrint]
 
 Where `program` is the location of the CORE program you are running, `input` is the location of the input file, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console. If no argument is provided for the print flag, or if a value other than print or doNotPrint is provided, the interpreter will default to doNotPrint. 
 
@@ -140,7 +140,7 @@ The Executor uses a `HashMap<String,RuntimeVariable>` to keep track of runtime v
 |--|--|
 | void | `executeCoreProgram()` <br> Execute a CORE program|
 
-File included in the Printer package:
+File included in the Executor package:
 - Executor.java - Contains the executor class, with RuntimeVariable subclass, to execute the program.
 
 ### Error Reporting
