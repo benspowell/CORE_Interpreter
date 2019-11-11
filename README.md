@@ -37,9 +37,9 @@ First navigate to bin: `$ cd CORE_Interpreter/project/bin`
 
 Run the compiled output:
 
-    $ java src/com/benspowell/core_interpreter/Interpreter program [print|doNotPrint]
+    $ java src/com/benspowell/core_interpreter/Interpreter program input [print|doNotPrint]
 
-Where `program` is the location of the CORE program you are running, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console.
+Where `program` is the location of the CORE program you are running, `input` is the location of the input file, and `[print|doNotPrint]` is either `print` or `doNotPrint`, depending on your preference for a pretty-printed version of the program to the console. If no argument is provided for the print flag, or if a value other than print or doNotPrint is provided, the interpreter will default to doNotPrint. 
 
 ## Details 
 
@@ -67,9 +67,6 @@ The context-free grammar for CORE as defined in class, in BNF (Backus–Naur For
     <let>::=A | B | C | ... | X | Y | Z
     <no>::=<digit> | <digit><no>
     <digit>::=0 | 1 | 2 | 3 | ... | 9
-    
-
-
 
 ### Tokenizer
 Converting a program written in CORE to tokens and TokenKinds. The Core language consists of the following 33 legal tokens:
@@ -100,19 +97,70 @@ Files included in the Tokenizer:
 ### Parser
 The parser takes tokens in order from the Tokenizer and uses them to build a ParseTree structure for the CORE program. 
 
-Files included in the Parser:
-- Parser.java - 
-- ParseTree.java - 
-- NonTerminalKind.java - 
+Some important public methods available from the Parser package:
+
+| Return Type | Method & Description |
+|--|--|
+| ParseTree | `Parser.coreProgram()` <br> Parse a CORE program, and return its ParseTree.|
+| void | `ParseTree.goDownLeftBranch()` <br> Go down the current node's left branch.|
+| void | `ParseTree.goDownMiddleBranch()` <br> Go down the current node's middle branch.|
+| void | `ParseTree.goDownRightBranch()` <br> Go down the current node's right branch.|
+| void | `ParseTree.goUp()` <br> Go up to the current node's parent.|
+| int | `ParseTree.currentAlternative()` <br> Which alternative (refer to BNF) is the current non-terminal using?|
+| String | `ParseTree.getCurrentIdName()` <br> For ID Nodes, get the ID Name.|
+| int | `ParseTree.getCurrentIntVal()` <br> For numeric nodes, get the value.|
+
+Files included in the Parser package:
+- Parser.java - Contains the parser class, which parses the program using recursive descent.
+- ParseTree.java - Contains the ParseTree class, which provides abtraction for the parse tree structure.
+- NonTerminalKind.java - Contains an enum for non-terminal kind.
 
 ### Printer
-The Printer navigates a fully-built ParseTree of a CORE program and prettyPrints it to the console.
+The Printer navigates a fully-built ParseTree of a CORE program and prettyPrints it to the console. It uses a PrettyPrintStream class as a wrapper for PrintStream to maintain consistency of indentation. 
+
+The printer should be initialized with a `PrintStream` and a fully built `ParseTree`. If no `PrintStream` is provided, `System.out` is used by default.
+
+The only public method available from the Printer package:
+
+| Return Type | Method & Description |
+|--|--|
+| void | `printCoreProgram()` <br> PrettyPrint a CORE program|
+
+File included in the Printer package:
+- Printer.java - Contains the printer class, with PrettyPrintStream subclass, to print the program.
 
 ### Executor 
+The Executor navigates the program parse tree and ushers the process through its runtime states, executing statements as appropriate. Runtime variables are tracked and updated thoughout the program's execution, and runtime errors are thrown as needed.
 
+The executor should be initialized with an output `PrintStream`, a fully built `ParseTree`, and a `Scanner` for input. If no `PrintStream` is provided, `System.out` is used by default.
+
+The Executor uses a `HashMap<String,RuntimeVariable>` to keep track of runtime variable ID's and values.
+
+| Return Type | Method & Description |
+|--|--|
+| void | `executeCoreProgram()` <br> Execute a CORE program|
+
+File included in the Printer package:
+- Executor.java - Contains the executor class, with RuntimeVariable subclass, to execute the program.
+
+### Error Reporting
+An error package was used to report errors from the parser and executor.
+
+The error package consists of the ParserException class, and the ExecutorException class, both of which extend Exception.
+
+Files:
+- ParserException.java - Detailed error reporting for parser.
+- ExecutorException.java - Detailed error reporting for executor.
 
 ## Testing
 The testing process for the interpreter was performed manually during the developmental stages of the project. 
 
+Several example programs were provided to use in testing, along with expected output. The files for those samples (program and input files) are included in the `program/data` folder. 
+
+The Interpreter produces the correct output for all files provided as samples.
+
 ## Bugs
 There are no known bugs in the program at this point.
+
+## Disclaimer
+All code in this project is the author's own work, other than ideas and structural details taken from lectures discussed in CSE 3341. Code from this project is not to be submitted for a class assignment by anyone other than the author.
