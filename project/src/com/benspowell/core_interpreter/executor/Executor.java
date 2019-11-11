@@ -1,6 +1,7 @@
 package com.benspowell.core_interpreter.executor;
 
 import java.io.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,12 @@ import java.util.Scanner;
 import com.benspowell.core_interpreter.error.ExecutorException;
 import com.benspowell.core_interpreter.parser.ParseTree;
 
+/**
+ * CORE Language Executor.
+ * 
+ * @author Ben Powell
+ *
+ */
 public class Executor {
 	
 	private ParseTree p;
