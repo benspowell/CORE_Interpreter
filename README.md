@@ -69,7 +69,7 @@ The context-free grammar for CORE as defined in class, in BNF (Backus–Naur For
     <digit>::=0 | 1 | 2 | 3 | ... | 9
 
 ### Tokenizer
-Converting a program written in CORE to tokens and TokenKinds. The Core language consists of the following 33 legal tokens:
+Converts a program written in CORE to tokens and TokenKinds. The Core language consists of the following 33 legal tokens:
 
 -   **Reserved words (11):**  
     program, begin, end, int, if, then, else, while, loop, read, write
